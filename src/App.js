@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './components/header';
 import Footer from './components/footer';
-import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon } from 'lucide-react';
+import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon, Cable as CableIcon } from 'lucide-react';
 
 import { useRef, useState } from 'react';
 
@@ -31,7 +31,9 @@ const Start = ({ state, setState }) => {
     <main className={`absolute flex flex-col justify-center items-center w-full h-full z-10 bg-purple-300 border-black border-y gap-16 transition-opacity duration-300 ${state ? "opacity-0 pointer-events-none" : "opacity-100 pointer-events-auto"}`}> 
 
       <div className='flex flex-col justify-center items-center w-full gap-8'>
-        <div className='w-20 h-20 bg-white'/>
+        <div className='flex justify-center items-center w-24 h-24 bg-white rounded-full'>
+          <CableIcon color="black" size={200}/>
+        </div>
         <h1 className="text-5xl font-extrabold">Conexiones</h1>
         <p>Agrupar palabras que comparten un hilo común.</p>
 
