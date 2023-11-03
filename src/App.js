@@ -3,7 +3,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon } from 'lucide-react';
 
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { compare, formatDate, range, shuffle } from './utils/game';
 
@@ -53,6 +53,8 @@ const Start = ({ state, setState }) => {
 }
 
 const Game = ({ state }) => {
+  // ref that checks whether the game has been setup
+  const setup = useRef(false);
 
   // tailwind color loading
   const [selectedColor, unselectedColor] = getSelectedColors();
@@ -219,10 +221,13 @@ const Game = ({ state }) => {
 
 
   // initially shuffle the words and reset selected words
-  useEffect(() => {
+  if (!setup.current) {
     shuffleWords();
     deselectWords();
-  }, []);
+
+    // flags as setup
+    setup.current = true;
+  }
 
 
   const Settings = () => {
