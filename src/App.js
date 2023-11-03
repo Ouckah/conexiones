@@ -78,7 +78,24 @@ const Game = ({ state }) => {
     "beso": ["hard", ["morreo", "besote", "besito", "besar"]],
     "amor": ["impossible", ["cariño", "adoración", "devoción", "intimidad"]]
   }
-  const [words, setWords] = useState(Object.values(solutions).flatMap(value => value[WORDS]));
+  function getSolutionWords() {
+    const solutionWords = [];
+
+    // loop through each solution and get difficulty + words
+    for (const key of Object.keys(solutions)) {
+      const solution = solutions[key];
+      const difficulty = solution[DIFFICULTY];
+      const words = solution[WORDS];
+
+      // loop through each word and create a { difficulty, word } object for each word
+      for (const word of words) {
+        solutionWords.push({ difficulty: difficulty, text: word });
+      }
+    }
+
+    return solutionWords;
+  }
+  const [words, setWords] = useState(getSolutionWords());
 
   // create array keeping track of when wordbuttons are selected
   const [selected, setSelected] = useState([]);
@@ -288,7 +305,7 @@ const Game = ({ state }) => {
         }
         {
           words.map((word, i) => (
-            <WordButton key={i} id={i} word={word} selected={selected[i]} />
+            <WordButton key={i} id={i} word={word.text} selected={selected[i]} />
           ))
         }
       </div>
