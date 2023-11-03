@@ -6,6 +6,7 @@ import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon, Cable a
 import { useRef, useState } from 'react';
 
 import { compare, formatDate, range, shuffle } from './utils/game';
+import { solutions } from './data/solution';
 
 function Home() {
 
@@ -72,12 +73,6 @@ const Game = ({ state }) => {
 
   // solution to the puzzle
   const [DIFFICULTY, WORDS] = [0, 1];
-  const solutions = {
-    "girar": ["easy", ["centrifugado", "enrollar", "retorcer", "revolver"]],
-    "risa": ["medium", ["risilla", "carcajada", "grito", "risita"]],
-    "beso": ["hard", ["morreo", "besote", "besito", "besar"]],
-    "amor": ["impossible", ["cariño", "adoración", "devoción", "intimidad"]]
-  }
   function getSolutionWords() {
     const solutionWords = [];
 
