@@ -247,7 +247,7 @@ const Game = ({ state }) => {
         className={`w-48 h-24 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm`}
         onClick={() => handleWordButtonClick(id)}
       >
-        <h1 className='text-black font-bold text-2xl uppercase'>{word}</h1>
+        <h1 className='text-black font-bold text-2xl uppercase select-none'>{word}</h1>
       </button>
     )
   }
@@ -255,8 +255,8 @@ const Game = ({ state }) => {
   const CorrectRow = ({ category, difficulty, answer }) => {
     return (
       <div className={`flex flex-col justify-center items-center col-span-4 h-24 ${STRING_TO_COLOR[difficulty]} px-60 rounded-lg`}>
-        <h1 className='text-black font-bold text-xl uppercase'>{category}</h1>
-        <div className='flex flex-row justify-center items-center gap-3 uppercase'>
+        <h1 className='text-black font-bold text-xl uppercase select-none'>{category}</h1>
+        <div className='flex flex-row justify-center items-center gap-3 uppercase select-none'>
           {
             answer.map((word) => (
               <h1>{word}</h1>
@@ -273,7 +273,7 @@ const Game = ({ state }) => {
 
       <Settings />
 
-      <h1 className='text-xl'>¡Crea grupos de cuatro!</h1>
+      <h1 className='text-xl select-none'>¡Crea grupos de cuatro!</h1>
 
       <div className={`grid grid-rows-${MAX_ROWS - rowsCompleted.length} grid-cols-4 gap-3`}>
 
@@ -293,12 +293,12 @@ const Game = ({ state }) => {
         }
       </div>
 
-      <div className='flex flex-row justify-center items-center w-1/2 gap-3'>
+      <div className='flex flex-row justify-center items-center w-1/2 gap-3 select-none'>
         <h1>Errores restantes: </h1>
         <div className='flex flex-row justify-start items-center gap-3'>
           {
             range(0, MAX_MISTAKES).map((mistake, i) => (
-              <div key={i} className={`${i >= mistakesRemaining ? "w-0" : "w-4"} ${i >= mistakesRemaining ? "h-0" : "h-4"} bg-yellow-400 rounded-full transition-all duration-700`}/>
+              <div key={i} className={`${i >= mistakesRemaining ? "w-0" : "w-4"} ${i >= mistakesRemaining ? "h-0" : "h-4"} bg-yellow-400 rounded-full transition-all duration-700 select-none`}/>
             ))
           }
         </div>
@@ -309,21 +309,21 @@ const Game = ({ state }) => {
           className='px-6 py-3 bg-white border-black border rounded-full'
           onClick={() => { shuffleWords(); deselectWords() }}
         >
-          <h1 className='font-medium'>Barajar</h1>
+          <h1 className='font-medium select-none'>Barajar</h1>
         </button>
 
         <button 
           className='px-6 py-3 bg-white border-black border rounded-full'
           onClick={deselectWords}
         >
-          <h1 className='font-medium'>Deseleccionar Todo</h1>
+          <h1 className='font-medium select-none'>Deseleccionar Todo</h1>
         </button>
 
         <button 
           className={`${selectedCount === 4 ? enabledColor + " text-white border-black" : disabledColor + " text-gray-400 border-gray-400"} border px-6 py-3 rounded-full`}
           onClick={handleSubmit}
         >
-          <h1 className='font-medium'>Entregar</h1>
+          <h1 className='font-medium select-none'>Entregar</h1>
         </button>
       </div>
 
