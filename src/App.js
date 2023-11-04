@@ -274,7 +274,6 @@ const Game = ({ state }) => {
 
   const Settings = () => {
     function HandleHelpButton() {
-      console.log("clicked");
       setPopup(true);
       setPopupInfo("help");
     }
@@ -282,7 +281,7 @@ const Game = ({ state }) => {
     return (
       <div className='flex flex-row justify-end items-center w-full h-24 bg-white border-black border-b gap-5 px-96'>
         <SettingsIcon className="cursor-pointer" color="black" size={30} />
-        <ShieldQuestionIcon className="cursor-pointer" color="black" size={30} />
+        <ShieldQuestionIcon className="cursor-pointer" color="black" size={30} onClick={HandleHelpButton} />
       </div>
     )
   }

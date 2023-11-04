@@ -12,11 +12,44 @@ const PopUp = ({ active, setActive, content, history }) => {
                 onClick={() => {} /* TODO: make so it only activates when click is outside of inner box */}
             >
     
-                <div className={`flex flex-col justify-items-center items-start ${active ? "w-[30em] h-[35em] z-20 pointer-events-auto" : "w-0 h-0 z-0 pointer-events-none hidden"} z-20 p-8 bg-white rounded-lg drop-shadow-xl`}>
+                <div className={`flex flex-col justify-items-center items-start ${active ? "w-[30em] h-[35em] z-20 pointer-events-auto" : "w-0 h-0 z-0 pointer-events-none hidden"} z-20 p-8 bg-white rounded-lg drop-shadow-xl gap-2`}>
                     <X className="self-end cursor-pointer" color="black" size={30} onClick={() => setActive(false)} />
                     
                     <h1 className="text-black font-extrabold text-2xl">Cómo jugar Conexiones</h1>
-                    <h2 className="text-black font-bold text-sm">Encuentra grupos de cuatro elementos que tengan algo en común.</h2>
+                    
+                    <div>
+                        <h2 className="text-black font-bold text-sm">Encuentra grupos de cuatro elementos que tengan algo en común.</h2>
+                        <p>• Seleccione cuatro elementos y toque 'Enviar' para verificar si su suposición es correcta.</p>
+                        <p>• ¡Encuentra los grupos sin cometer 4 errores!</p>
+                    </div>
+
+                    <div>
+                        <h2 className="text-black font-bold text-sm">Ejemplos de Categorías</h2>
+                        <p>• PESCADO: Lubina, Platija, Salmón, Trucha</p>
+                        <p>• FUEGO ___: Hormiga, Taladro, Isla, Ópalo</p>
+                    </div>
+
+                    <h3>Cada rompecabezas tiene exactamente una solución. ¡Cuidado con las palabras que parecen pertenecer a múltiples categorías!</h3>
+
+                    <div className="flex flex-col justify-start items-start">
+                        <h3>A cada grupo se le asigna un color, que se revelará a medida que resuelvas:</h3>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-5 h-5 bg-yellow-100" />
+                            <h1>Fácil</h1>
+                        </div>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-5 h-5 bg-green-200" />
+                            <h1>Medio</h1>
+                        </div>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-5 h-5 bg-blue-100" />
+                            <h1>Duro</h1>
+                        </div>
+                        <div className="flex flex-row items-center gap-2">
+                            <div className="w-5 h-5 bg-purple-200" />
+                            <h1>Imposible</h1>
+                        </div>
+                    </div>
                 </div>
     
             </div>
