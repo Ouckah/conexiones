@@ -6,7 +6,7 @@ import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon, Cable a
 
 import { useRef, useState } from 'react';
 
-import { compare, formatDate, range, shuffle, sleep } from './utils/game';
+import { formatDate, range, shuffle, sleep } from './utils/game';
 import { solutions } from './data/solution';
 import { STRING_TO_COLOR, WORD_INDEX_INFO } from './constants/solutionInfo';
 
@@ -237,7 +237,7 @@ const Game = ({ state }) => {
     setRowsCompleted(newRowsCompleted);
 
     // completed all rows
-    if (rowsCompleted.length + 1 == MAX_ROWS) {
+    if (rowsCompleted.length + 1 === MAX_ROWS) {
       setWinStatus("win");
 
       await sleep(1000);
@@ -400,9 +400,6 @@ function getSelectedColors() {
 }
 function getEnabledColors() {
   return ["bg-black", "bg-white"];
-}
-function getDifficultyColors() {
-  return ["bg-yellow-100", "bg-green-200", "bg-blue-100", "bg-purple-200"];
 }
 
 export default Home;
