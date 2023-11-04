@@ -6,9 +6,10 @@ import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon, Cable a
 
 import { useRef, useState } from 'react';
 
-import { formatDate, range, shuffle, sleep } from './utils/game';
+import { compare, formatDate, range, shuffle, sleep } from './utils/game';
 import { solutions } from './data/solution';
 import { STRING_TO_COLOR, WORD_INDEX_INFO } from './constants/solutionInfo';
+import Notification from './components/notification';
 
 function Home() {
 
@@ -107,6 +108,8 @@ const Game = ({ state }) => {
   // state for popup + info
   const [popup, setPopup] = useState(false);
   const [popupInfo, setPopupInfo] = useState("");
+  const [notification, setNotifaction] = useState(false);
+  const [notificationInfo, setNotifactionInfo] = useState("");
 
   function shuffleWords() {
     const newWords = shuffle([...words]);
@@ -164,12 +167,20 @@ const Game = ({ state }) => {
     setSelectedCount((prevSelectedCount) => prevSelectedCount + 1);
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     // do not accept answers less than 4
     if (selectedCount !== 4) return;
 
     // get all words that are currently selected
     const answer = getSelectedWords();
+    
+    // check if duplicate guess / answer
+    for (const prevAnswer of answerHistory) {
+      if (compare(answer, prevAnswer)) {
+        handleDuplicateSubmit();
+        return;
+      }
+    }
 
     // log answer in answer history
     const newAnswerHistory = answerHistory;
@@ -191,12 +202,36 @@ const Game = ({ state }) => {
     // the guessed words
     let found = true;
 
+    // logic for checking if user was one away with guess
+    let map = {} // map all the difficulties (for checking if one away)
+    for (const word of answer) {
+      // logic for map
+      if (!Object.keys(map).includes(word.difficulty)) {
+        map[word.difficulty] = 1;
+      } else {
+        map[word.difficulty] += 1;
+      }
+    }
+
     // loop through each word in our answer and check if the difficulties/categories match
     // break if there is an inconsistency and flag
     for (const word of answer) {
+      // checks if 
       if (word.difficulty !== difficulty) {
         found = false;
         break;
+      }
+    }
+
+    // logic for displaying notification
+    // if user was one word off
+    for (const key of Object.keys(map)) {
+      if (map[key] === 3) {
+        setNotifaction(true);
+        setNotifactionInfo("oneaway");
+
+        await sleep(1000);
+        setNotifaction(false);
       }
     }
 
@@ -252,13 +287,26 @@ const Game = ({ state }) => {
 
     // no more mistakes
     if (mistakesRemaining - 1 === 0) {
+      setNotifaction(true);
+      setNotifactionInfo("lose");
+
       setWinStatus("lose");
 
       await sleep(1000);
 
+      setNotifaction(false);
+
       setPopup(true);
       setPopupInfo("lose");
     }
+  }
+
+  async function handleDuplicateSubmit() {
+    setNotifaction(true);
+    setNotifactionInfo("duplicate");
+
+    await sleep(1000);
+    setNotifaction(false);
   }
 
 
@@ -318,6 +366,7 @@ const Game = ({ state }) => {
 
       <Settings />
       <PopUp active={popup} setActive={setPopup} content={popupInfo} history={answerHistory} />
+      <Notification active={notification} setActive={setNotifaction} content={notificationInfo} />
 
       <h1 className='text-xl select-none'>¡Crea grupos de cuatro!</h1>
 
