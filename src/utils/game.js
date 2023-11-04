@@ -41,3 +41,7 @@ export function formatDate() {
   const formattedDate = `${month} ${date.getDate()}, ${date.getFullYear()}`;
   return formattedDate;
 }
+
+export async function sleep(ms) {
+  return await new Promise(resolve => setTimeout(resolve, ms));
+}

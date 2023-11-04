@@ -1,12 +1,14 @@
 import './App.css';
 import Header from './components/header';
 import Footer from './components/footer';
+import PopUp from './components/popup';
 import { Settings as SettingsIcon, ShieldQuestion as ShieldQuestionIcon, Cable as CableIcon } from 'lucide-react';
 
 import { useRef, useState } from 'react';
 
-import { compare, formatDate, range, shuffle } from './utils/game';
+import { compare, formatDate, range, shuffle, sleep } from './utils/game';
 import { solutions } from './data/solution';
+import { STRING_TO_COLOR, WORD_INDEX_INFO } from './constants/solutionInfo';
 
 function Home() {
 
@@ -16,7 +18,7 @@ function Home() {
     <div>
       <Header />
       
-      <div className='w-full h-screen relative pointer-events-none'>
+      <div className='flex justify-center items-center w-full h-screen relative pointer-events-none'>
         <Start state={playing} setState={setPlaying}/>
 
         <Game state={playing} />
@@ -62,17 +64,9 @@ const Game = ({ state }) => {
   // tailwind color loading
   const [selectedColor, unselectedColor] = getSelectedColors();
   const [enabledColor, disabledColor] = getEnabledColors();
-  const [easyColor, mediumColor, hardColor, impossibleColor] = getDifficultyColors();
-
-  const STRING_TO_COLOR = {
-    "easy": easyColor,
-    "medium": mediumColor,
-    "hard": hardColor,
-    "impossible": impossibleColor
-  }
 
   // solution to the puzzle
-  const [DIFFICULTY, WORDS] = [0, 1];
+  const [DIFFICULTY, WORDS] = WORD_INDEX_INFO;
   function getSolutionWords() {
     const solutionWords = [];
 
@@ -96,6 +90,9 @@ const Game = ({ state }) => {
   const [selected, setSelected] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
 
+  // keep track of answer history
+  const [answerHistory, setAnswerHistory] = useState([]);
+
   // keep track of mistakes made
   const MAX_MISTAKES = 4;
   const [mistakesRemaining, setMistakesRemaining] = useState(MAX_MISTAKES);
@@ -104,6 +101,12 @@ const Game = ({ state }) => {
   const MAX_ROWS = 4;
   const [rowsCompleted, setRowsCompleted] = useState([]);
 
+  // keep track of win or not
+  const [winStatus, setWinStatus] = useState("");
+
+  // state for popup + info
+  const [popup, setPopup] = useState(false);
+  const [popupInfo, setPopupInfo] = useState("");
 
   function shuffleWords() {
     const newWords = shuffle([...words]);
@@ -168,26 +171,31 @@ const Game = ({ state }) => {
     // get all words that are currently selected
     const answer = getSelectedWords();
 
-    // stores the category and difficulty of 
-    // the possible correct answer
+    // log answer in answer history
+    const newAnswerHistory = answerHistory;
+    newAnswerHistory.push(answer);
+    setAnswerHistory(newAnswerHistory);
+
+    // stores the initial difficulty and 
+    // finds the associated possible category
     let category;
-    let difficulty;
+    let difficulty = answer[0].difficulty;
+    for (const key of Object.keys(solutions)) {
+      if (solutions[key][DIFFICULTY] === difficulty) {
+        category = key;
+        break;
+      }
+    }
 
     // flag that flags when a solution matches
     // the guessed words
-    let found = false;
+    let found = true;
 
-    // loop through each category in the solution
-    for (const cat of Object.keys(solutions)) {
-      const diff = solutions[cat][DIFFICULTY]; 
-      const solution = solutions[cat][WORDS]; 
-
-      // if we find a category of words that matches
-      // the words guessed, flag and set category
-      if (compare(answer, solution)) {
-        found = true;
-        category = cat;
-        difficulty = diff;
+    // loop through each word in our answer and check if the difficulties/categories match
+    // break if there is an inconsistency and flag
+    for (const word of answer) {
+      if (word.difficulty !== difficulty) {
+        found = false;
         break;
       }
     }
@@ -197,7 +205,7 @@ const Game = ({ state }) => {
     else handleWrongSubmit();
   }
 
-  function handleCorrectSubmit(category, difficulty, answer) {
+  async function handleCorrectSubmit(category, difficulty, answer) {
     // swap selected with first unused row
     // get selected indexes and indexes of first unused row
     const selectedIndexes = getSelectedIndexes();
@@ -227,10 +235,30 @@ const Game = ({ state }) => {
       answer: answer
     });
     setRowsCompleted(newRowsCompleted);
+
+    // completed all rows
+    if (rowsCompleted.length + 1 == MAX_ROWS) {
+      setWinStatus("win");
+
+      await sleep(1000);
+
+      setPopup(true);
+      setPopupInfo("win");
+    }
   }
 
-  function handleWrongSubmit() {
+  async function handleWrongSubmit() {
     setMistakesRemaining((prevMistakesRemaining) => prevMistakesRemaining - 1);
+
+    // no more mistakes
+    if (mistakesRemaining - 1 === 0) {
+      setWinStatus("lose");
+
+      await sleep(1000);
+
+      setPopup(true);
+      setPopupInfo("lose");
+    }
   }
 
 
@@ -245,8 +273,14 @@ const Game = ({ state }) => {
 
 
   const Settings = () => {
+    function HandleHelpButton() {
+      console.log("clicked");
+      setPopup(true);
+      setPopupInfo("help");
+    }
+
     return (
-      <div className='flex flex-row justify-end items-center w-full h-24 bg-white border-black border-b gap-5 px-96'> 
+      <div className='flex flex-row justify-end items-center w-full h-24 bg-white border-black border-b gap-5 px-96'>
         <SettingsIcon className="cursor-pointer" color="black" size={30} />
         <ShieldQuestionIcon className="cursor-pointer" color="black" size={30} />
       </div>
@@ -270,8 +304,8 @@ const Game = ({ state }) => {
         <h1 className='text-black font-bold text-xl uppercase select-none'>{category}</h1>
         <div className='flex flex-row justify-center items-center gap-3 uppercase select-none'>
           {
-            answer.map((word) => (
-              <h1>{word}</h1>
+            answer.map((word, i) => (
+              <h1 key={i}>{word.text}</h1>
             ))
           }
         </div>
@@ -284,14 +318,16 @@ const Game = ({ state }) => {
     <main className={`absolute flex flex-col justify-start items-center w-full h-full bg-white border-black border-y gap-10 transition-opacity duration-300 ${state ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}> 
 
       <Settings />
+      <PopUp active={popup} setActive={setPopup} content={popupInfo} history={answerHistory} />
 
       <h1 className='text-xl select-none'>¡Crea grupos de cuatro!</h1>
 
       <div className={`grid grid-rows-${MAX_ROWS - rowsCompleted.length} grid-cols-4 gap-3`}>
 
         {
-          rowsCompleted.map((row) => (
+          rowsCompleted.map((row, i) => (
             <CorrectRow 
+              key={i}
               category={row.category}
               difficulty={row.difficulty}
               answer={row.answer}
@@ -304,39 +340,56 @@ const Game = ({ state }) => {
           ))
         }
       </div>
-
-      <div className='flex flex-row justify-center items-center w-1/2 gap-3 select-none'>
-        <h1>Errores restantes: </h1>
-        <div className='flex flex-row justify-start items-center gap-3'>
-          {
-            range(0, MAX_MISTAKES).map((mistake, i) => (
-              <div key={i} className={`${i >= mistakesRemaining ? "w-0" : "w-4"} ${i >= mistakesRemaining ? "h-0" : "h-4"} bg-yellow-400 rounded-full transition-all duration-700 select-none`}/>
-            ))
-          }
-        </div>
-      </div>
+      
+      {
+        winStatus === "" ? (
+          <div className='flex flex-row justify-center items-center w-1/2 gap-3 select-none'>
+            <h1>Errores restantes: </h1>
+            <div className='flex flex-row justify-start items-center gap-3'>
+              {
+                range(0, MAX_MISTAKES).map((mistake, i) => (
+                  <div key={i} className={`${i >= mistakesRemaining ? "w-0" : "w-4"} ${i >= mistakesRemaining ? "h-0" : "h-4"} bg-yellow-400 rounded-full transition-all duration-700 select-none`}/>
+                ))
+              }
+            </div>
+          </div>
+        ) : (<></>)
+      }
 
       <div className='flex flex-row justify-center items-center w-1/2 gap-3'>
-        <button 
-          className='px-6 py-3 bg-white border-black border rounded-full'
-          onClick={() => { shuffleWords(); deselectWords() }}
-        >
-          <h1 className='font-medium select-none'>Barajar</h1>
-        </button>
+        {
+          winStatus === "" ? (
+            <>
+              <button 
+                className='px-6 py-3 bg-white border-black border rounded-full'
+                onClick={() => { shuffleWords(); deselectWords() }}
+              >
+                <h1 className='font-medium select-none'>Barajar</h1>
+              </button>
 
-        <button 
-          className='px-6 py-3 bg-white border-black border rounded-full'
-          onClick={deselectWords}
-        >
-          <h1 className='font-medium select-none'>Deseleccionar Todo</h1>
-        </button>
+              <button 
+                className='px-6 py-3 bg-white border-black border rounded-full'
+                onClick={deselectWords}
+              >
+                <h1 className='font-medium select-none'>Deseleccionar Todo</h1>
+              </button>
 
-        <button 
-          className={`${selectedCount === 4 ? enabledColor + " text-white border-black" : disabledColor + " text-gray-400 border-gray-400"} border px-6 py-3 rounded-full`}
-          onClick={handleSubmit}
-        >
-          <h1 className='font-medium select-none'>Entregar</h1>
-        </button>
+              <button 
+                className={`${selectedCount === 4 ? enabledColor + " text-white border-black" : disabledColor + " text-gray-400 border-gray-400"} border px-6 py-3 rounded-full`}
+                onClick={handleSubmit}
+              >
+                <h1 className='font-medium select-none'>Entregar</h1>
+              </button>
+            </>
+          ) : (
+            <button 
+              className='px-6 py-3 bg-white border-black border rounded-full'
+              onClick={() => { setPopup(true); setPopupInfo(winStatus) }}
+            >
+              <h1 className='font-medium select-none'>Resultados</h1>
+            </button>
+          )
+        }
       </div>
 
     </main>
