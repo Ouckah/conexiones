@@ -332,7 +332,7 @@ const Game = ({ state }) => {
   const WordButton = ({ id, word, selected }) => {
     return (
       <button 
-        className={`w-full h-24 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm`}
+        className={`w-full h-18 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm lg:h-24`}
         onClick={() => handleWordButtonClick(id)}
       >
         <h1 className='text-black font-bold text-xs uppercase select-none lg:text-2xl break-all' style={{ whiteSpace: 'pre-wrap', overflow: 'hidden' }}>{word}</h1>
@@ -357,7 +357,7 @@ const Game = ({ state }) => {
 
 
   return (
-    <main className={`absolute flex flex-col justify-start items-center w-full h-full bg-white border-black border-y gap-10 transition-opacity duration-300 ${state ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}> 
+    <main className={`absolute flex flex-col justify-start items-center w-full h-full bg-white border-black border-y gap-10 p-2 transition-opacity duration-300 ${state ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}> 
 
       <Settings />
       <PopUp active={popup} setActive={setPopup} content={popupInfo} history={answerHistory} handleNotification={handleNotification} />
@@ -365,7 +365,7 @@ const Game = ({ state }) => {
 
       <h1 className='text-xl select-none'>¡Crea grupos de cuatro!</h1>
 
-      <div className={`grid grid-rows-${MAX_ROWS - rowsCompleted.length} grid-cols-4 gap-3`}>
+      <div className={`h-1/2 grid grid-rows-${MAX_ROWS - rowsCompleted.length} grid-cols-4 gap-3 p-5`}>
 
         {
           rowsCompleted.map((row, i) => (
@@ -407,21 +407,21 @@ const Game = ({ state }) => {
                 className='px-6 py-3 bg-white border-black border rounded-full'
                 onClick={() => { shuffleWords(); deselectWords() }}
               >
-                <h1 className='font-medium select-none'>Barajar</h1>
+                <h1 className='text-xs font-medium select-none lg:text-md'>Barajar</h1>
               </button>
 
               <button 
                 className='px-6 py-3 bg-white border-black border rounded-full'
                 onClick={deselectWords}
               >
-                <h1 className='font-medium select-none'>Deseleccionar Todo</h1>
+                <h1 className='text-xs font-medium select-none lg:text-md'>Deseleccionar Todo</h1>
               </button>
 
               <button 
                 className={`${selectedCount === 4 ? enabledColor + " text-white border-black" : disabledColor + " text-gray-400 border-gray-400"} border px-6 py-3 rounded-full`}
                 onClick={handleSubmit}
               >
-                <h1 className='font-medium select-none'>Entregar</h1>
+                <h1 className='text-xs font-medium select-none lg:text-md'>Entregar</h1>
               </button>
             </>
           ) : (
@@ -431,7 +431,7 @@ const Game = ({ state }) => {
                 handlePopup(winStatus);
               }}
             >
-              <h1 className='font-medium select-none'>Resultados</h1>
+              <h1 className='text-xs font-medium select-none lg:text-md'>Resultados</h1>
             </button>
           )
         }
