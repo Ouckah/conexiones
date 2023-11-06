@@ -26,6 +26,15 @@ const Notification = ({ active, setActive, content }) => {
             </div>
         )
     }
+
+    // COPIED POPUP 
+    if (content === "copy") {
+        return (
+            <div className={`flex absolute justify-center items-center w-48 h-6 ${active ? "z-10 opacity-100" : "z-10 opacity-0"} translate-y-[10.5em] bg-black transition-opacity rounded-full duration-300`}>
+                <h1 className="text-white font-medium text-xs select-none">Copiada</h1>
+            </div>
+        )
+    }
 }
 
 export default Notification;

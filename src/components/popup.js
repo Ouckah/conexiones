@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { STRING_TO_COLOR, STRING_TO_EMOJI } from "../constants/solutionInfo";
 import Timer from "./timer";
 
-const PopUp = ({ active, setActive, content, history }) => {
+const PopUp = ({ active, setActive, content, history, handleNotification }) => {
 
     // HELP POPUP
     if (content === "help") {
@@ -93,7 +93,10 @@ const PopUp = ({ active, setActive, content, history }) => {
 
                     <button 
                         className="bg-black px-12 py-3 rounded-full"
-                        onClick={() => {navigator.clipboard.writeText(resultPastable)}}
+                        onClick={() => {
+                            handleNotification("copy");
+                            navigator.clipboard.writeText(resultPastable)
+                        }}
                     >
                         <h1 className="text-white font-medium">Compartir</h1>
                     </button>

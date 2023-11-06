@@ -108,8 +108,8 @@ const Game = ({ state }) => {
   // state for popup + info
   const [popup, setPopup] = useState(false);
   const [popupInfo, setPopupInfo] = useState("");
-  const [notification, setNotifaction] = useState(false);
-  const [notificationInfo, setNotifactionInfo] = useState("");
+  const [notification, setNotification] = useState(false);
+  const [notificationInfo, setNotificationInfo] = useState("");
 
   function shuffleWords() {
     const newWords = shuffle([...words]);
@@ -227,11 +227,7 @@ const Game = ({ state }) => {
     // if user was one word off
     for (const key of Object.keys(map)) {
       if (map[key] === 3) {
-        setNotifaction(true);
-        setNotifactionInfo("oneaway");
-
-        await sleep(1000);
-        setNotifaction(false);
+        handleNotification("oneaway")
       }
     }
 
@@ -277,8 +273,7 @@ const Game = ({ state }) => {
 
       await sleep(1000);
 
-      setPopup(true);
-      setPopupInfo("win");
+      handlePopup("win");
     }
   }
 
@@ -287,26 +282,27 @@ const Game = ({ state }) => {
 
     // no more mistakes
     if (mistakesRemaining - 1 === 0) {
-      setNotifaction(true);
-      setNotifactionInfo("lose");
-
+      handleNotification("lose");
       setWinStatus("lose");
-
-      await sleep(1000);
-
-      setNotifaction(false);
-
-      setPopup(true);
-      setPopupInfo("lose");
+      handlePopup("lose");
     }
   }
 
   async function handleDuplicateSubmit() {
-    setNotifaction(true);
-    setNotifactionInfo("duplicate");
+    handleNotification("duplicate")
+  }
+
+  function handlePopup(type) {
+    setPopup(true); 
+    setPopupInfo(type);
+  }
+
+  async function handleNotification(type) {
+    setNotification(true);
+    setNotificationInfo(type);
 
     await sleep(1000);
-    setNotifaction(false);
+    setNotification(false)
   }
 
 
@@ -322,8 +318,7 @@ const Game = ({ state }) => {
 
   const Settings = () => {
     function HandleHelpButton() {
-      setPopup(true);
-      setPopupInfo("help");
+      handlePopup("help");
     }
 
     return (
@@ -365,8 +360,8 @@ const Game = ({ state }) => {
     <main className={`absolute flex flex-col justify-start items-center w-full h-full bg-white border-black border-y gap-10 transition-opacity duration-300 ${state ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}> 
 
       <Settings />
-      <PopUp active={popup} setActive={setPopup} content={popupInfo} history={answerHistory} />
-      <Notification active={notification} setActive={setNotifaction} content={notificationInfo} />
+      <PopUp active={popup} setActive={setPopup} content={popupInfo} history={answerHistory} handleNotification={handleNotification} />
+      <Notification active={notification} setActive={setNotification} content={notificationInfo} />
 
       <h1 className='text-xl select-none'>¡Crea grupos de cuatro!</h1>
 
@@ -432,7 +427,9 @@ const Game = ({ state }) => {
           ) : (
             <button 
               className='px-6 py-3 bg-white border-black border rounded-full'
-              onClick={() => { setPopup(true); setPopupInfo(winStatus) }}
+              onClick={() => { 
+                handlePopup(winStatus);
+              }}
             >
               <h1 className='font-medium select-none'>Resultados</h1>
             </button>
