@@ -327,7 +327,7 @@ const Game = ({ state }) => {
     }
 
     return (
-      <div className='flex flex-row justify-end items-center w-full h-24 bg-white border-black border-b gap-5 px-96'>
+      <div className='flex flex-row justify-center items-center w-full h-24 bg-white border-black border-b gap-5 px-36 lg:justify-end lg:px-96'>
         <SettingsIcon className="cursor-pointer" color="black" size={30} />
         <ShieldQuestionIcon className="cursor-pointer" color="black" size={30} onClick={HandleHelpButton} />
       </div>
@@ -337,10 +337,10 @@ const Game = ({ state }) => {
   const WordButton = ({ id, word, selected }) => {
     return (
       <button 
-        className={`w-48 h-24 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm`}
+        className={`w-full h-24 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm`}
         onClick={() => handleWordButtonClick(id)}
       >
-        <h1 className='text-black font-bold text-2xl uppercase select-none'>{word}</h1>
+        <h1 className='text-black font-bold text-xs uppercase select-none lg:text-2xl break-all' style={{ whiteSpace: 'pre-wrap', overflow: 'hidden' }}>{word}</h1>
       </button>
     )
   }
