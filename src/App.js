@@ -344,7 +344,7 @@ const Game = ({ state }) => {
     return (
       <div className={`flex flex-col justify-center items-center col-span-4 h-full ${STRING_TO_COLOR[difficulty]} rounded-lg lg:h-24`}>
         <h1 className='text-black font-bold text-md uppercase select-none lg:text-xl'>{category}</h1>
-        <div className='flex flex-row justify-center items-center text-xs gap-3 uppercase select-none lg:text-md'>
+        <div className='flex flex-row justify-center items-center text-xs gap-3 uppercase select-none lg:text-lg'>
           {
             answer.map((word, i) => (
               <h1 key={i}>{word.text}</h1>
