@@ -12,7 +12,7 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
                 onClick={() => {} /* TODO: make so it only activates when click is outside of inner box */}
             >
     
-                <div className={`flex flex-col justify-items-center items-start ${active ? "w-[30em] h-[35em] z-20 pointer-events-auto" : "w-0 h-0 z-0 pointer-events-none hidden"} z-20 p-8 bg-white rounded-lg drop-shadow-xl gap-2`}>
+                <div className={`flex flex-col justify-items-center items-start ${active ? "w-full h-[35em] z-20 pointer-events-auto" : "w-0 h-0 z-0 pointer-events-none hidden"} z-20 p-8 bg-white rounded-lg drop-shadow-xl gap-2 sm:w-[30em]`}>
                     <X className="self-end cursor-pointer" color="black" size={30} onClick={() => setActive(false)} />
                     
                     <h1 className="text-black font-extrabold text-2xl">Cómo jugar Conexiones</h1>
