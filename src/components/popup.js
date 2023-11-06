@@ -47,7 +47,7 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
                         </div>
                         <div className="flex flex-row items-center gap-2">
                             <div className="w-5 h-5 bg-purple-200" />
-                            <h1>Imposible</h1>
+                            <h1>Impossible</h1>
                         </div>
                     </div>
                 </div>
