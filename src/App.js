@@ -384,57 +384,59 @@ const Game = ({ state }) => {
         }
       </div>
       
-      {
-        winStatus === "" ? (
-          <div className='flex flex-row justify-center items-center w-1/2 gap-3 select-none'>
-            <h1>Errores restantes: </h1>
-            <div className='flex flex-row justify-start items-center gap-3'>
-              {
-                range(0, MAX_MISTAKES).map((mistake, i) => (
-                  <div key={i} className={`${i >= mistakesRemaining ? "w-0" : "w-4"} ${i >= mistakesRemaining ? "h-0" : "h-4"} bg-yellow-400 rounded-full transition-all duration-700 select-none`}/>
-                ))
-              }
-            </div>
-          </div>
-        ) : (<></>)
-      }
-
-      <div className='flex flex-row justify-center items-center w-1/2 gap-3'>
+      <div className='flex flex-col justify-items-center items-center w-full h-1/2 gap-10'>
         {
           winStatus === "" ? (
-            <>
-              <button 
-                className='px-6 py-3 bg-white border-black border rounded-full'
-                onClick={() => { shuffleWords(); deselectWords() }}
-              >
-                <h1 className='text-xs font-medium select-none lg:text-md'>Barajar</h1>
-              </button>
-
-              <button 
-                className='px-6 py-3 bg-white border-black border rounded-full'
-                onClick={deselectWords}
-              >
-                <h1 className='text-xs font-medium select-none lg:text-md'>Deseleccionar Todo</h1>
-              </button>
-
-              <button 
-                className={`${selectedCount === 4 ? enabledColor + " text-white border-black" : disabledColor + " text-gray-400 border-gray-400"} border px-6 py-3 rounded-full`}
-                onClick={handleSubmit}
-              >
-                <h1 className='text-xs font-medium select-none lg:text-md'>Entregar</h1>
-              </button>
-            </>
-          ) : (
-            <button 
-              className='px-6 py-3 bg-white border-black border rounded-full'
-              onClick={() => { 
-                handlePopup(winStatus);
-              }}
-            >
-              <h1 className='text-xs font-medium select-none lg:text-md'>Resultados</h1>
-            </button>
-          )
+            <div className='flex flex-row justify-center items-center w-1/2 gap-3 select-none'>
+              <h1>Errores restantes: </h1>
+              <div className='flex flex-row justify-start items-center gap-3'>
+                {
+                  range(0, MAX_MISTAKES).map((mistake, i) => (
+                    <div key={i} className={`${i >= mistakesRemaining ? "w-0" : "w-4"} ${i >= mistakesRemaining ? "h-0" : "h-4"} bg-yellow-400 rounded-full transition-all duration-700 select-none`}/>
+                  ))
+                }
+              </div>
+            </div>
+          ) : (<></>)
         }
+
+        <div className='flex flex-row justify-center items-center w-1/2 gap-3'>
+          {
+            winStatus === "" ? (
+              <>
+                <button 
+                  className='px-6 py-3 bg-white border-black border rounded-full'
+                  onClick={() => { shuffleWords(); deselectWords() }}
+                >
+                  <h1 className='text-xs font-medium select-none lg:text-md'>Barajar</h1>
+                </button>
+
+                <button 
+                  className='px-6 py-3 bg-white border-black border rounded-full'
+                  onClick={deselectWords}
+                >
+                  <h1 className='text-xs font-medium select-none lg:text-md'>Deseleccionar Todo</h1>
+                </button>
+
+                <button 
+                  className={`${selectedCount === 4 ? enabledColor + " text-white border-black" : disabledColor + " text-gray-400 border-gray-400"} border px-6 py-3 rounded-full`}
+                  onClick={handleSubmit}
+                >
+                  <h1 className='text-xs font-medium select-none lg:text-md'>Entregar</h1>
+                </button>
+              </>
+            ) : (
+              <button 
+                className='px-6 py-3 bg-white border-black border rounded-full'
+                onClick={() => { 
+                  handlePopup(winStatus);
+                }}
+              >
+                <h1 className='text-xs font-medium select-none lg:text-md'>Resultados</h1>
+              </button>
+            )
+          }
+        </div>
       </div>
 
     </main>
