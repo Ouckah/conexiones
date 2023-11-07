@@ -101,7 +101,7 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
 
                     <h1 className="text-black font-extrabold text-2xl">{content === "lose" ? "¡La próxima vez!" : "¡Bien hecho!"}</h1>
                     <h2 className="text-black font-light text-lg">Conexiones</h2>
-                    <h2 className="text-black font-semibold text-md">Puzzle #{getPuzzleNumber()}</h2>
+                    <h2 className="text-black font-semibold text-md">Rompecabezas #{getPuzzleNumber()}</h2>
 
                     <div className="grid grid-cols-4 gap-y-1">
                     {
