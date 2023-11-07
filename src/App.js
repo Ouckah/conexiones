@@ -332,7 +332,7 @@ const Game = ({ state }) => {
   const WordButton = ({ id, word, selected }) => {
     return (
       <button 
-        className={`w-full h-18 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm lg:h-24`}
+        className={`w-full h-18 ${selected ? selectedColor : unselectedColor} rounded-lg drop-shadow-sm lg:h-24 max-h-[100%]`}
         onClick={() => handleWordButtonClick(id)}
       >
         <h1 className='text-black font-bold text-xs uppercase select-none lg:text-2xl break-all' style={{ whiteSpace: 'pre-wrap', overflow: 'hidden' }}>{word}</h1>
