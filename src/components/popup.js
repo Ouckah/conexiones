@@ -63,11 +63,15 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
             // Specify the certain date in YYYY-MM-DD format
             const certainDate = '2023-11-6'; // date of the first official conexiones puzzle
 
-            // Parse the certain date into a JavaScript Date object
+            // Create a JavaScript Date object for the certain date and set its time zone offset to EST (UTC-5)
             const certainDateObj = new Date(certainDate);
+            certainDateObj.setHours(0, 0, 0, 0);
+            certainDateObj.setMinutes(certainDateObj.getMinutes() - certainDateObj.getTimezoneOffset() - 300); // 300 minutes = 5 hours
 
-            // Get the current date
+            // Get the current date and set its time zone offset to EST (UTC-5)
             const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+            currentDate.setMinutes(currentDate.getMinutes() - currentDate.getTimezoneOffset() - 300);
 
             // Calculate the time difference in milliseconds
             const timeDifference = currentDate - certainDateObj;
