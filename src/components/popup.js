@@ -84,7 +84,7 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
         // pastable for user to copy and share
         function getPastable() {
             let resultPastable = "Conexión\n";
-            resultPastable += "Puzzle #" + getPuzzleNumber() + "\n"
+            resultPastable += "Rompecabezas #" + getPuzzleNumber() + "\n"
             for (const answer of history) {
                 for (const word of answer) {
                     resultPastable += STRING_TO_EMOJI[word.difficulty];
