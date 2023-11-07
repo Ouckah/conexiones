@@ -1,6 +1,6 @@
 export const solutions = {
-    "girar": ["easy", ["centrifugado", "enrollar", "retorcer", "revolver"]],
-    "risa": ["medium", ["risilla", "carcajada", "grito", "risita"]],
-    "beso": ["hard", ["morreo", "besote", "besito", "besar"]],
-    "amor": ["impossible", ["cariño", "adoración", "devoción", "intimidad"]]
+    "inteligente": ["easy", ["informado", "experto", "listo", "astuto"]],
+    "utensilios de cocina": ["medium", ["tenedor", "chuchara", "chuchillo", "plato"]],
+    "plana y redonda": ["hard", ["CD", "pizza", "frisbee", "vinilo"]],
+    "ajedrez": ["impossible", ["peón", "rey", "reina", "caballero"]]
 }
