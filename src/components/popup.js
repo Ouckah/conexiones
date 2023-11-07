@@ -91,6 +91,8 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
                 }
                 resultPastable += "\n";
             }
+
+            return resultPastable;
         }
 
         return (
