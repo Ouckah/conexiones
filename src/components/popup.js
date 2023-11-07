@@ -67,6 +67,29 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
 
     // LOSE / WIN POPUP
     if (content === "lose" || content === "win") {
+
+        function getPuzzleNumber() {
+            // Specify the certain date in YYYY-MM-DD format
+            const certainDate = '2023-11-6'; // date of the first official conexiones puzzle
+
+            // Parse the certain date into a JavaScript Date object
+            const certainDateObj = new Date(certainDate);
+
+            // Get the current date
+            const currentDate = new Date();
+
+            // Calculate the time difference in milliseconds
+            const timeDifference = currentDate - certainDateObj;
+
+            // Convert milliseconds to days
+            let daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+            // increment by one (puzzles 1-indexed)
+            daysDifference++;
+
+            return daysDifference
+        }
+
         return (
             <div 
                 className={`flex absolute justify-center items-center ${active ? "w-full h-full z-10 pointer-events-auto" : "w-0 h-0 z-10 pointer-events-none"} backdrop-blur-sm transition-all duration-300`}
@@ -78,6 +101,7 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
 
                     <h1 className="text-black font-extrabold text-2xl">{content === "lose" ? "¡La próxima vez!" : "¡Bien hecho!"}</h1>
                     <h2 className="text-black font-light text-lg">Conexiones</h2>
+                    <h2 className="text-black font-semibold text-md">Puzzle #{getPuzzleNumber()}</h2>
 
                     <div className="grid grid-cols-4 gap-y-1">
                     {
