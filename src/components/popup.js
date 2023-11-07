@@ -56,15 +56,6 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
         )
     }
 
-    // pastable for user to copy and share
-    let resultPastable = "Conexión\n";
-    for (const answer of history) {
-        for (const word of answer) {
-            resultPastable += STRING_TO_EMOJI[word.difficulty];
-        }
-        resultPastable += "\n";
-    }
-
     // LOSE / WIN POPUP
     if (content === "lose" || content === "win") {
 
@@ -88,6 +79,18 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
             daysDifference++;
 
             return daysDifference
+        }
+
+        // pastable for user to copy and share
+        function getPastable() {
+            let resultPastable = "Conexión\n";
+            resultPastable += "Puzzle #" + getPuzzleNumber() + "\n"
+            for (const answer of history) {
+                for (const word of answer) {
+                    resultPastable += STRING_TO_EMOJI[word.difficulty];
+                }
+                resultPastable += "\n";
+            }
         }
 
         return (
@@ -119,7 +122,7 @@ const PopUp = ({ active, setActive, content, history, handleNotification }) => {
                         className="bg-black px-12 py-3 rounded-full"
                         onClick={() => {
                             handleNotification("copy");
-                            navigator.clipboard.writeText(resultPastable)
+                            navigator.clipboard.writeText(getPastable())
                         }}
                     >
                         <h1 className="text-white font-medium">Compartir</h1>
