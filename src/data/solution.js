@@ -1,6 +1,6 @@
 export const solutions = {
-    "fuego": ["easy", ["quema", "llama", "hoguera", "quemadura"]],
-    "el plató de cine": ["medium", ["cámara", "pantalla verde", "actor", "alumbrado"]],
-    "desastre natural": ["hard", ["tornado", "huracán", "terremoto", "erupción"]],
-    "picnic": ["impossible", ["manta", "canasta", "comida", "hormiga"]]
+    "triste": ["easy", ["deprimido", "mustio", "pesimista", "infeliz"]],
+    "electrónico": ["medium", ["teléfono", "televisión", "despertador", "computadora"]],
+    "rojo": ["hard", ["tomate", "autobomba", "manzana", "rosa"]],
+    "lleno": ["impossible", ["oso", "pavo", "calceta", "pimienta"]]
 }
